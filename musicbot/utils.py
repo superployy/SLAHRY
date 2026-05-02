@@ -1,11 +1,20 @@
 import asyncio
 from config import config
 
+from musicbot.audiocontroller import AudioController
+from musicbot.settings import Settings
+
 # A dictionary that remembers which guild belongs to which audiocontroller
 guild_to_audiocontroller = {}
 
 # A dictionary that remembers which settings belongs to which guild
 guild_to_settings = {}
+
+
+async def register(bot, guild):
+    """Registers a guild's settings and audio controller. Safe to call multiple times."""
+    guild_to_settings[guild] = Settings(guild)
+    guild_to_audiocontroller[guild] = AudioController(bot, guild)
 
 
 def get_guild(bot, command):
