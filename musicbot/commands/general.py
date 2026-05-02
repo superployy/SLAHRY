@@ -8,18 +8,18 @@ from musicbot.utils import guild_to_audiocontroller, guild_to_settings
 
 
 class General(commands.Cog):
-    """ A collection of the commands for moving the bot around in you server.
+    """ បណ្តុំនៃពាក្យបញ្ជា (Commands) សម្រាប់បញ្ជា Bot នៅក្នុង Server របស់អ្នក។
 
-            Attributes:
-                bot: The instance of the bot that is executing the commands.
+            លក្ខណៈសម្បត្តិ (Attributes):
+                bot: ឧទាហរណ៍នៃ bot ដែលកំពុងអនុវត្តពាក្យបញ្ជា។
     """
 
     def __init__(self, bot):
         self.bot = bot
 
-    # logic is split to uconnect() for wide usage
+    # តក្កវិជ្ជាត្រូវបានបំបែកទៅជា uconnect() សម្រាប់ការប្រើប្រាស់ទូទៅ
     @commands.command(name='connect', description=config.HELP_CONNECT_LONG, help=config.HELP_CONNECT_SHORT, aliases=['c'])
-    async def _connect(self, ctx):  # dest_channel_name: str
+    async def _connect(self, ctx):  # ឈ្មោះ channel គោលដៅ: str
         current_guild = utils.get_guild(self.bot, ctx.message)
         audiocontroller = utils.guild_to_audiocontroller[current_guild]
         await audiocontroller.uconnect(ctx)
@@ -44,7 +44,7 @@ class General(commands.Cog):
             self.bot, current_guild)
         await guild_to_audiocontroller[current_guild].register_voice_channel(ctx.author.voice.channel)
 
-        await ctx.send("{} Connected to {}".format(":white_check_mark:", ctx.author.voice.channel.name))
+        await ctx.send("{} បានភ្ជាប់ទៅកាន់ {}".format(":white_check_mark:", ctx.author.voice.channel.name))
 
     @commands.command(name='changechannel', description=config.HELP_CHANGECHANNEL_LONG, help=config.HELP_CHANGECHANNEL_SHORT, aliases=['cc'])
     async def _change_channel(self, ctx):
@@ -52,7 +52,7 @@ class General(commands.Cog):
 
         vchannel = await utils.is_connected(ctx)
         if vchannel == ctx.author.voice.channel:
-            await ctx.send("{} Already connected to {}".format(":white_check_mark:", vchannel.name))
+            await ctx.send("{} បានភ្ជាប់ទៅកាន់ {} រួចរាល់ហើយ".format(":white_check_mark:", vchannel.name))
             return
 
         if current_guild is None:
@@ -65,11 +65,11 @@ class General(commands.Cog):
             self.bot, current_guild)
         await guild_to_audiocontroller[current_guild].register_voice_channel(ctx.author.voice.channel)
 
-        await ctx.send("{} Switched to {}".format(":white_check_mark:", ctx.author.voice.channel.name))
+        await ctx.send("{} បានប្តូរទៅកាន់ {}".format(":white_check_mark:", ctx.author.voice.channel.name))
 
     @commands.command(name='ping', description=config.HELP_PING_LONG, help=config.HELP_PING_SHORT)
     async def _ping(self, ctx):
-        await ctx.send("Pong")
+        await ctx.send("Pong (កំពុងដំណើរការ)")
 
     @commands.command(name='setting', description=config.HELP_SHUFFLE_LONG, help=config.HELP_SETTINGS_SHORT, aliases=['settings', 'set'])
     @has_permissions(administrator=True)
@@ -87,13 +87,13 @@ class General(commands.Cog):
         response = await sett.write(args[0], " ".join(args_list), ctx)
 
         if response is None:
-            await ctx.send("`Error: Setting not found`")
+            await ctx.send("`កំហុស: រកមិនឃើញការកំណត់ (Setting)`")
         elif response is True:
-            await ctx.send("Setting updated!")
+            await ctx.send("ការកំណត់ត្រូវបានធ្វើបច្ចុប្បន្នភាព!")
 
     @commands.command(name='addbot', description=config.HELP_ADDBOT_LONG, help=config.HELP_ADDBOT_SHORT)
     async def _addbot(self, ctx):
-        embed = discord.Embed(title="Invite", description=config.ADD_MESSAGE +
+        embed = discord.Embed(title="អញ្ជើញ Bot", description=config.ADD_MESSAGE +
                               "(https://discordapp.com/oauth2/authorize?client_id={}&scope=bot>)".format(self.bot.user.id))
 
         await ctx.send(embed=embed)
