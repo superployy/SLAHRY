@@ -11,8 +11,7 @@ from discord.ext import commands
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from config import config
-from musicbot.audiocontroller import AudioController
-from musicbot.settings import Settings
+from musicbot import utils
 from musicbot.utils import guild_to_audiocontroller, guild_to_settings
 
 initial_extensions = [
@@ -36,8 +35,7 @@ bot = commands.Bot(
 
 
 async def register(guild):
-    guild_to_settings[guild] = Settings(guild)
-    guild_to_audiocontroller[guild] = AudioController(bot, guild)
+    await utils.register(bot, guild)
 
     sett = guild_to_settings[guild]
 
