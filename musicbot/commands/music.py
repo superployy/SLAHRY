@@ -21,6 +21,14 @@ class Music(commands.Cog):
     async def _play_song(self, ctx, *, track: str):
 
         current_guild = utils.get_guild(self.bot, ctx.message)
+
+        if current_guild is None:
+            await ctx.send(config.NO_GUILD_MESSAGE)
+            return
+
+        if current_guild not in utils.guild_to_audiocontroller:
+            await utils.register(self.bot, current_guild)
+
         audiocontroller = utils.guild_to_audiocontroller[current_guild]
 
         if (await utils.is_connected(ctx) == None):
